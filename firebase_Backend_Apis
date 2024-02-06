@@ -1,0 +1,74 @@
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+const ExpenseTracker = () => {
+  const [moneySpent, setMoneySpent] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [date, setDate] = useState('');
+  const [expenses, setExpenses] = useState([]);
+
+  useEffect(() => {
+    // Fetch expenses from Firebase Realtime Database on component mount
+    const fetchExpenses = async () => {
+      const expensesRef = firebase.database().ref('expenses');
+      expensesRef.on('value', (snapshot) => {
+        const expensesData = snapshot.val();
+        if (expensesData) {
+          const expensesList = Object.keys(expensesData).map((key) => ({
+            id: key,
+            ...expensesData[key]
+          }));
+          setExpenses(expensesList);
+        }
+      });
+    };
+
+    fetchExpenses();
+
+    // Cleanup function to unsubscribe from Firebase listener
+    return () => {
+      firebase.database().ref('expenses').off();
+    };
+  }, []);
+
+  const handleAddExpense = () => {
+    const newExpense = {
+      moneySpent,
+      description,
+      category,
+      date
+    };
+    // Add new expense to Firebase Realtime Database
+    firebase.database().ref('expenses').push(newExpense);
+    // Clear input fields after adding expense
+    setMoneySpent('');
+    setDescription('');
+    setCategory('');
+    setDate('');
+  };
+
+  return (
+    <div>
+      <h2>Add Daily Expenses</h2>
+      {/* Expense Form */}
+      <form onSubmit={handleAddExpense}>
+        {/* Input fields */}
+        <button type="submit">Add Expense</button>
+      </form>
+      
+      {/* Display Expenses */}
+      <h3>Expenses:</h3>
+      <ul>
+        {expenses.map((expense) => (
+          <li key={expense.id}>
+            {/* Display expense details */}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ExpenseTracker;
