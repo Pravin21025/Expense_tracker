@@ -1,0 +1,99 @@
+// ProfileIncomplete.js
+import React from 'react';
+
+const ProfileIncomplete = ({ onCompleteProfile }) => {
+  return (
+    <div>
+      <h2>Your profile is incomplete</h2>
+      <p>Please complete your profile to continue.</p>
+      <button onClick={onCompleteProfile}>Complete Profile</button>
+    </div>
+  );
+};
+
+export default ProfileIncomplete;
+
+
+
+// ProfileUpdate.js:
+
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+const ProfileUpdate = ({ user }) => {
+  const [displayName, setDisplayName] = useState(user.displayName || '');
+  const [photoURL, setPhotoURL] = useState(user.photoURL || '');
+
+  const handleUpdateProfile = async () => {
+    try {
+      await firebase.auth().currentUser.updateProfile({
+        displayName,
+        photoURL
+      });
+      console.log('User profile updated successfully.');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Update Your Profile</h2>
+      <div>
+        <label>Display Name:</label>
+        <input
+          type="text"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Photo URL:</label>
+        <input
+          type="text"
+          value={photoURL}
+          onChange={(e) => setPhotoURL(e.target.value)}
+        />
+      </div>
+      <button onClick={handleUpdateProfile}>Update</button>
+    </div>
+  );
+};
+
+export default ProfileUpdate;
+
+
+// WelcomeScreen.js:
+import React from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import ProfileIncomplete from './ProfileIncomplete';
+import ProfileUpdate from './ProfileUpdate';
+
+const WelcomeScreen = () => {
+  const user = firebase.auth().currentUser;
+
+  const onCompleteProfile = () => {
+    // Implement navigation logic to ProfileUpdate page
+  };
+
+  return (
+    <div>
+      {user.displayName && user.photoURL ? (
+        <ProfileUpdate user={user} />
+      ) : (
+        <ProfileIncomplete onCompleteProfile={onCompleteProfile} />
+      )}
+    </div>
+  );
+};
+
+export default WelcomeScreen;
+
+  
+
+
+
+
+
