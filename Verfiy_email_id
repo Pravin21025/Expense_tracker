@@ -1,0 +1,44 @@
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+// Initialize Firebase (replace with your own config)
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const VerifyEmailButton = ({ email }) => {
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [error, setError] = useState(null);
+
+  const sendVerificationEmail = () => {
+    const user = firebase.auth().currentUser;
+    user.sendEmailVerification()
+      .then(() => {
+        setVerificationSent(true);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  return (
+    <div>
+      {verificationSent ? (
+        <p>Verification email sent to {email}. Check your inbox.</p>
+      ) : (
+        <button onClick={sendVerificationEmail}>Verify Email</button>
+      )}
+      {error && <p>Error: {error}</p>}
+    </div>
+  );
+};
+
+export default VerifyEmailButton;
