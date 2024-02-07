@@ -1,0 +1,60 @@
+// cartReducer.js
+const initialState = {
+  isVisible: false,
+};
+
+const cartReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'TOGGLE_CART_VISIBILITY':
+      return {
+        ...state,
+        isVisible: !state.isVisible,
+      };
+    default:
+      return state;
+  }
+};
+
+export default cartReducer;
+
+
+// store.js
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from './cartReducer';
+
+const store = configureStore({
+  reducer: {
+    cart: cartReducer,
+    // Add other reducers here
+  },
+});
+
+export default store;
+
+
+// YourComponent.js
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleCartVisibility } from './cartReducer';
+
+const YourComponent = () => {
+  const isVisible = useSelector(state => state.cart.isVisible);
+  const dispatch = useDispatch();
+
+  const handleToggleCart = () => {
+    dispatch(toggleCartVisibility());
+  };
+
+  return (
+    <div>
+      <button onClick={handleToggleCart}>My Cart</button>
+      {isVisible && (
+        <div>
+          {/* Cart content */}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default YourComponent;
