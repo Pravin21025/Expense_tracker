@@ -1,0 +1,65 @@
+// themeReducer.js
+const initialState = {
+  darkMode: false,
+};
+
+const themeReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'TOGGLE_THEME':
+      return {
+        ...state,
+        darkMode: !state.darkMode,
+      };
+    default:
+      return state;
+  }
+};
+
+export default themeReducer;
+
+
+// utils.js
+export const expensesToCsv = (expenses) => {
+  const header = 'Date,Description,Amount\n';
+  const rows = expenses.map(expense => `${expense.date},${expense.description},${expense.amount}`).join('\n');
+  return header + rows;
+};
+
+// App.js
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from './actions/themeActions';
+import { expensesToCsv } from './utils';
+
+const App = () => {
+  const darkMode = useSelector(state => state.theme.darkMode);
+  const expenses = useSelector(state => state.expenses.expenses);
+  const dispatch = useDispatch();
+
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme());
+  };
+
+  const handleDownloadExpenses = () => {
+    const csvData = expensesToCsv(expenses);
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'expenses.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  return (
+    <div className={darkMode ? 'dark-theme' : 'light-theme'}>
+      <h1>Expense Tracker</h1>
+      <button onClick={handleToggleTheme}>Toggle Theme</button>
+      <button onClick={handleDownloadExpenses}>Download Expenses</button>
+      {/* Rest of the app */}
+    </div>
+  );
+};
+
+export default App;
