@@ -1,0 +1,56 @@
+// AuthReducer.js
+const initialState = {
+  isAuthenticated: false,
+  token: null,
+  userId: null,
+};
+
+const authReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return {
+        ...state,
+        isAuthenticated: true,
+        token: action.payload.token,
+        userId: action.payload.userId,
+      };
+    case 'LOGOUT':
+      return {
+        ...state,
+        isAuthenticated: false,
+        token: null,
+        userId: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export default authReducer;
+
+
+// ExpensesReducer.js
+const initialState = {
+  expenses: [],
+  showPremiumButton: false,
+};
+
+const expensesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_EXPENSE':
+      return {
+        ...state,
+        expenses: [...state.expenses, action.payload],
+      };
+    case 'FETCH_EXPENSES_SUCCESS':
+      return {
+        ...state,
+        expenses: action.payload,
+        showPremiumButton: action.payload.length > 10000,
+      };
+    default:
+      return state;
+  }
+};
+
+export default expensesReducer;
