@@ -1,0 +1,83 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { showNotification } from './redux/uiSlice'; // Importing action creator to show notification
+
+function MyComponent() {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const handleApiCall = async () => {
+    setLoading(true);
+    try {
+      // Simulating API call
+      const response = await fetch('https://api.example.com/data');
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      // Assuming data is successfully fetched
+      setLoading(false);
+      dispatch(showNotification({ message: 'Data fetched successfully', type: 'success' }));
+    } catch (error) {
+      setLoading(false);
+      dispatch(showNotification({ message: 'Failed to fetch data', type: 'error' }));
+    }
+  };
+
+  return (
+    <div>
+      {loading ? (
+        // Show loading screen
+        <div>Loading...</div>
+      ) : (
+        <div>
+          {/* Show success or error notification based on state */}
+          {/* This part can be handled in Notification component */}
+          {/* For simplicity, using alert */}
+          {/* You should replace this with your Notification component */}
+          {error && <div>Error: {error.message}</div>}
+          <button onClick={handleApiCall}>Fetch Data</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default MyComponent;
+
+
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCartData } from './redux/cartSlice'; // Importing action creator to fetch cart data
+
+function CartComponent() {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const cart = useSelector(state => state.cart); // Assuming cart state is stored in redux store
+
+  useEffect(() => {
+    setLoading(true);
+    dispatch(fetchCartData())
+      .then(() => setLoading(false))
+      .catch(() => setLoading(false));
+  }, [dispatch]);
+
+  return (
+    <div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div>
+          {/* Display cart items */}
+          {cart.items.map(item => (
+            <div key={item.id}>
+              <p>{item.name}</p>
+              <p>Quantity: {item.quantity}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default CartComponent;
