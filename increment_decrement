@@ -1,0 +1,42 @@
+const counterReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1; // Handles decrement action
+    default:
+      return state;
+  }
+};
+import React from 'react';
+
+const ParentComponent = () => {
+  const message = 'Hello from Parent';
+  return <ChildComponent message={message} />;
+};
+
+const ChildComponent = (props) => {
+  return <p>{props.message}</p>;
+};
+
+export default ParentComponent;
+
+
+import React, { useState } from 'react';
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    setCount(count + 1);
+  };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+};
+
+export default Counter;
