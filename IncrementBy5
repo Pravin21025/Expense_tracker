@@ -1,0 +1,48 @@
+// App.js
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, incrementByAmount, decrementByAmount } from './actions';
+
+const App = () => {
+  const counter = useSelector(state => state.counter);
+  const dispatch = useDispatch();
+
+  const handleIncrementBy5 = () => {
+    dispatch(incrementByAmount(5));
+  };
+
+  const handleDecrementBy5 = () => {
+    dispatch(decrementByAmount(5));
+  };
+
+  return (
+    <div>
+      <h1>Counter: {counter}</h1>
+      <button onClick={() => dispatch(increment())}>Increment</button>
+      <button onClick={() => dispatch(decrement())}>Decrement</button>
+      <button onClick={handleIncrementBy5}>Increment By 5</button>
+      <button onClick={handleDecrementBy5}>Decrement By 5</button>
+    </div>
+  );
+};
+
+export default App;
+
+
+
+// actions.js
+export const increment = () => {
+  return { type: 'INCREMENT' };
+};
+
+export const decrement = () => {
+  return { type: 'DECREMENT' };
+};
+
+export const incrementByAmount = (amount) => {
+  return { type: 'INCREMENT_BY_AMOUNT', payload: amount };
+};
+
+export const decrementByAmount = (amount) => {
+  return { type: 'DECREMENT_BY_AMOUNT', payload: amount };
+};
