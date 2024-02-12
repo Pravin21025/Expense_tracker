@@ -1,0 +1,32 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import ExpenseTracker from './ExpenseTracker'; // Assuming this is your main component
+
+// Test suite for ExpenseTracker component
+describe('ExpenseTracker component', () => {
+  // Test case 1: Renders without crashing
+  test('renders without crashing', () => {
+    render(<ExpenseTracker />);
+    expect(screen.getByTestId('expense-tracker')).toBeInTheDocument();
+  });
+
+  // Test case 2: Displays correct heading
+  test('displays correct heading', () => {
+    render(<ExpenseTracker />);
+    expect(screen.getByText('Expense Tracker')).toBeInTheDocument();
+  });
+
+  // Test case 3: Add expense functionality
+  test('adds expense correctly', () => {
+    // Simulate adding an expense
+    // Assert that the expense is displayed on the screen
+  });
+
+  // Test case 4: Delete expense functionality
+  test('deletes expense correctly', () => {
+    // Simulate deleting an expense
+    // Assert that the expense is removed from the screen
+  });
+
+  // Additional test cases...
+});
