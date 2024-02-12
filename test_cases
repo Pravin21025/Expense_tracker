@@ -1,0 +1,78 @@
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import ExpenseTracker from './ExpenseTracker'; // Assuming this is your main component
+
+describe('ExpenseTracker component', () => {
+  // Test case 1: Renders without crashing
+  test('renders without crashing', () => {
+    render(<ExpenseTracker />);
+    expect(screen.getByTestId('expense-tracker')).toBeInTheDocument();
+  });
+
+  // Test case 2: Displays correct heading
+  test('displays correct heading', () => {
+    render(<ExpenseTracker />);
+    expect(screen.getByText('Expense Tracker')).toBeInTheDocument();
+  });
+
+  // Test case 3: Adds expense correctly
+  test('adds expense correctly', () => {
+    render(<ExpenseTracker />);
+    const expenseInput = screen.getByPlaceholderText('Enter expense amount');
+    fireEvent.change(expenseInput, { target: { value: '50' } });
+    const addButton = screen.getByText('Add Expense');
+    fireEvent.click(addButton);
+    expect(screen.getByText('$50')).toBeInTheDocument();
+  });
+
+  // Test case 4: Deletes expense correctly
+  test('deletes expense correctly', () => {
+    // Render ExpenseTracker component with some initial expenses
+    // Simulate deleting an expense
+    // Assert that the expense is removed from the screen
+  });
+
+  // Test case 5: Displays total expenses correctly
+  test('displays total expenses correctly', () => {
+    // Render ExpenseTracker component with some initial expenses
+    // Assert that the total expenses are displayed correctly
+  });
+
+  // Test case 6: Filters expenses correctly
+  test('filters expenses correctly', () => {
+    // Render ExpenseTracker component with some initial expenses
+    // Simulate applying a filter
+    // Assert that only filtered expenses are displayed
+  });
+
+  // Test case 7: Shows message when no expenses
+  test('shows message when no expenses', () => {
+    // Render ExpenseTracker component with no initial expenses
+    // Assert that a message indicating no expenses is displayed
+  });
+
+  // Test case 8: Displays loading spinner when fetching data
+  test('displays loading spinner when fetching data', async () => {
+    // Mock API call to simulate loading data
+    // Render ExpenseTracker component
+    // Assert that loading spinner is displayed initially
+    // Wait for data to be loaded
+    // Assert that loading spinner is not displayed anymore
+  });
+
+  // Test case 9: Displays error message when API call fails
+  test('displays error message when API call fails', async () => {
+    // Mock API call to simulate failure
+    // Render ExpenseTracker component
+    // Wait for error message to be displayed
+    // Assert that error message is displayed
+  });
+
+  // Test case 10: Saves expense data to localStorage
+  test('saves expense data to localStorage', () => {
+    // Render ExpenseTracker component with some expenses
+    // Assert that expense data is saved to localStorage
+  });
+
+  // Additional test cases...
+});
